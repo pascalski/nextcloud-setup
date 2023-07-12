@@ -9,3 +9,5 @@ Inside the terraform folder there are the files stored to setup the nextcloud on
     terraform init
     terraform plan
     terraform apply -auto-approve
+
+Inside the terraform/main.tf you can change via the count variable how many servers you want to create. Possible options would be 3 database servers for a mariadb galera cluster, 5 nextcloud servers for the application and 2 storage servers with minio s3 storage installed which works as primary storage.
