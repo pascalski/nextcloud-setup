@@ -8,15 +8,16 @@ module "network" {
 }
 
 module "nextcloud-server" {
+  count = 1
   source = "./modules/server"
-  server_name = "nextcloud-server-1"
+  server_name = "nextcloud-server-${count.index}"
   server_location = "nbg1"
   server_type = "cx11"
   server_network = module.network.nextcloud-network-id
 }
 
 module "database-server" {
-  count = 2
+  count = 1
   source = "./modules/server"
   server_name = "database-server-${count.index}"
   server_location = "nbg1"
@@ -25,8 +26,9 @@ module "database-server" {
 }
 
 module "storage-server" {
+  count = 1  
   source = "./modules/server"
-  server_name = "storage-1"
+  server_name = "storage-server${count.index}"
   server_location = "nbg1"
   server_type = "cx11"
   server_network = module.network.nextcloud-network-id
