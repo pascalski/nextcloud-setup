@@ -13,3 +13,12 @@ variable "server_location" {
 variable "server_network" {
     type = string
 }
+
+variable "server_private_ip" {
+    type = string
+}
+
+variable "server_ssh_keys" {
+    type = list(number)
+  
+}

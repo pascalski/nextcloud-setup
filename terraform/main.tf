@@ -1,3 +1,8 @@
+resource "hcloud_ssh_key" "terraform-ssh-key" {
+  name       = "Terraform Key"
+  public_key = file("~/.ssh/id_rsa.pub")
+}
+
 module "network" {
   source = "./modules/network"
   network_zone = "eu-central"
@@ -14,6 +19,8 @@ module "nextcloud-server" {
   server_location = "nbg1"
   server_type = "cx11"
   server_network = module.network.nextcloud-network-id
+  server_private_ip = cidrhost(module.network.nextcloud-subnet-ip-range, count.index+1)
+  server_ssh_keys = [ hcloud_ssh_key.terraform-ssh-key.id ]
 }
 
 module "database-server" {
@@ -23,6 +30,8 @@ module "database-server" {
   server_location = "nbg1"
   server_type = "cx11"
   server_network = module.network.nextcloud-network-id
+  server_private_ip = cidrhost(module.network.database-subnet-ip-range, count.index+1)
+  server_ssh_keys = [ hcloud_ssh_key.terraform-ssh-key.id ]
 }
 
 module "storage-server" {
@@ -32,4 +41,6 @@ module "storage-server" {
   server_location = "nbg1"
   server_type = "cx11"
   server_network = module.network.nextcloud-network-id
+  server_private_ip = cidrhost(module.network.storage-subnet-ip-range, count.index+1)
+  server_ssh_keys = [ hcloud_ssh_key.terraform-ssh-key.id ]
 }
